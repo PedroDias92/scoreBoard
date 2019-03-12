@@ -38,15 +38,42 @@ const Player = (props) => {
     );
 }
 
-const Counter = (props) =>{
-    return(
-        <div className="counter">
-            <button className="counter-action decrement"> - </button>
-            <span className="counter-score">{props.score}</span>
-            <button className="counter-action increment"> + </button>
-        </div>
-    );
+class Counter extends React.Component{
+    /* constructor(){
+        super(); //calls the React.Component methods and variables
+        this.state ={   //is part of React.Component
+            score:0
+        };
+    } */
+    //or
+    state={
+        score:0
+    };
+
+    incrementScore(){
+        //console.log("hi, increment");
+        this.setState({
+            score: this.state.score + 1
+        });
+    }
+    decrementScore(){
+        //console.log("hi, decrement");
+        this.setState({
+            score: this.state.score - 1
+        });
+    }
+
+    render(){
+        return(
+            <div className="counter">
+                <button className="counter-action decrement" onClick={this.decrementScore.bind(this)}> - </button>
+                <span className="counter-score">{this.state.score}</span>
+                <button className="counter-action increment" onClick={this.incrementScore.bind(this)}> + </button>
+            </div>
+        );
+    }
 }
+
 
 const App = (props) =>{
     //console.log(props.initialPlayers)
@@ -54,16 +81,16 @@ const App = (props) =>{
         <div className="scoreboard">
             <Header 
                 title="Scoreboard" 
-                totalPlayers={1}
+                totalPlayers={props.initialPlayers.length}
 
             />
             {/* Players List */}
-            <Player name="pedro" score={2}/>
-            {props.initialPlayers.map((player) =>{
+            {/* <Player name="pedro" score={2}/> */}
+            {props.initialPlayers.map((player,index) =>{
                 return(
                 <Player 
                     name={player.name} 
-                    score={player.score}
+                    key={index.toString()}   //need to had a key because react needs to know what element to rende
                 />
             )})}
         </div>
